@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from .models import Task
 # Create your views here.
 
-class TaskView(LoginRequiredMixin,ListView):
+class TaskList(LoginRequiredMixin,ListView):
     model = Task
     context_object_name = "tasks"
     template_name = "todo/list_task.html"
