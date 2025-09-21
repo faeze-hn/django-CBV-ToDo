@@ -13,6 +13,15 @@ class LoginView(LoginView):
     redirect_authentication_user = True
     success_url = "/task-list/"
 
-    
+
 class RegisterPage(FormView):
-    pass
+    template_name = "accounts/register.html"
+    form_class = UserCreationForm
+    redirect_authentication_user = True
+    success_url = reverse_lazy("task_list")
+
+    def form_valid(self, form):
+        user = form.save()
+        if user is not None:
+            login(self.request, user)
+        return super(RegisterPage, self).form_valid(form)
