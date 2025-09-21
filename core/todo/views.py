@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import (
     CreateView,
@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import Task
 from .forms import TaskUpdateForm
+from django.views import View
 # Create your views here.
 
 
@@ -37,6 +38,15 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     form_class = TaskUpdateForm
     template_name = "todo/update_task.html"
 
+class TaskComplete(LoginRequiredMixin, View):
+    model = Task
+    success_url = reverse_lazy("task_list")
+
+    def get(self, request, *args, **kwargs):
+        object = Task.objects.get(id=kwargs.get("pk"))
+        object.complete = True
+        object.save()
+        return redirect(self.success_url)
 
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
