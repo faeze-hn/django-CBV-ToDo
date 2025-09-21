@@ -11,7 +11,8 @@ class LoginView(LoginView):
     template_name = "accounts/login.html"
     fields = "username","password"
     redirect_authentication_user = True
-    success_url = "/task-list/"
+    def get_success_url(self):
+        return reverse_lazy("task_list")
 
 
 class RegisterPage(FormView):
