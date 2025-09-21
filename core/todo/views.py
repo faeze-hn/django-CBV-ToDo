@@ -30,7 +30,12 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super(TaskCreate, self).form_valid(form)
 
-class TaskDelete(LoginRequiredMixin,DeleteView):
+
+class TaskUpdate(LoginRequiredMixin, UpdateView):
+    model = Task
+
+
+class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     fields = ["title"]
     success_url = reverse_lazy("task_list")
