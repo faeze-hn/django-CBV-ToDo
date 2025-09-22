@@ -24,6 +24,7 @@
 						<label for="floatingInput">Title</label>
 					</div>
 					<button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Change</button>
+					<button class="w-100 mb-2 btn btn-lg rounded-4 btn-outline-danger" type="submit" formmethod="post" formaction="{% url 'delete_task' object.id %}">Delete</button>
 				</form>				
 			</div>
 		</div>

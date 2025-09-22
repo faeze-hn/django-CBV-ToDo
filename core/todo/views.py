@@ -54,3 +54,6 @@ class TaskDelete(LoginRequiredMixin,DeleteView):
      success_url = reverse_lazy("task_list")
 
      template_name = "todo/task_confirm_delete.html"
+
+     def get_queryset(self):
+         return Task.objects.filter(user=self.request.user)
