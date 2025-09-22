@@ -19,13 +19,14 @@
 
       <div class="modal-body p-5 pt-0">
 
-        <form class="pt-3" method="POST" action="{% url 'create_task' %}">
+        <form class="pt-3" method="POST" action="{% url 'create_task' %}" id="create-form">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <input type="text" class="form-control rounded-4" name="title" placeholder="Enter task title"
+            <input type="text" class="form-control rounded-4" name="title" id="task-title" placeholder="Enter task title"
               aria-label="Recipient's username" aria-describedby="button-addon2">
             <button class="btn btn-primary" type="submit">Add</button>
           </div>
+          <div id="title-error" class="text-danger small" style="display:none;">No task entered.</div>
         </form>
 
           <hr class="my-4">
@@ -42,7 +43,7 @@
               {% csrf_token %}
               <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
             </form>
-            <a type="button" class="btn btn-success" href="{% url 'complete_task' task.id %}">✓</a>
+            <a type="button" class="btn btn-success" href="{% url 'complete_task' task.id %}">&#10003;</a>
             <a type="button" class="btn btn-secondary" href="{% url 'update_task' task.id %}"><i class="bi bi-pencil"></i></a>
           </div>
       
@@ -53,4 +54,31 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}{% endblock %}
+{% block extra_js %}
+<script>
+  (function(){
+    const form = document.getElementById('create-form');
+    const input = document.getElementById('task-title');
+    const err = document.getElementById('title-error');
+    if(form && input && err){
+      form.addEventListener('submit', function(e){
+        if(!input.value || input.value.trim().length === 0){
+          e.preventDefault();
+          err.style.display = 'block';
+          input.classList.add('is-invalid');
+          input.focus();
+        } else {
+          err.style.display = 'none';
+          input.classList.remove('is-invalid');
+        }
+      });
+      input.addEventListener('input', function(){
+        if(input.value.trim().length > 0){
+          err.style.display = 'none';
+          input.classList.remove('is-invalid');
+        }
+      });
+    }
+  })();
+</script>
+{% endblock %}
